@@ -1,11 +1,19 @@
-DIR=<root dir of output result>
-for M in <job name>; do
+#!/bin/bash
+
+DIR=./outputs/tnt
+mkdir -p ${DIR}
+tanksandtemples_dir=/content/drive/MyDrive/MVS/tankandtemples
+load_dir=/content/Vis-MVSNet/pretrained_model/vis
+
+job_name=("model_cas")  # Correct way to define an array in Bash
+
+for M in "${job_name[@]}"; do
     for S in {0..7}; do
         for NS in 7; do
-            echo ${S}_${M}_${NS}
+            echo "----------Processing scan $S with model $M and ${NS} views----------"
             mkdir -p ${DIR}/depth_${S}_${M}_${NS}
-            SCAN=${S} python test.py \
-                --data_root <tanksandtemples dir> \
+            SCAN=${S} python /content/Vis-MVSNet/test.py \
+                --data_root ${tanksandtemples_dir} \
                 --dataset_name tanksandtemples \
                 --model_name model_cas \
                 --num_src ${NS} \
@@ -16,7 +24,7 @@ for M in <job name>; do
                 --resize 1920,1080 \
                 --crop 1920,1056 \
                 --mode soft \
-                --load_path <load dir>/${M} \
+                --load_path ${load_dir}/ \
                 --write_result \
                 --result_dir ${DIR}/depth_${S}_${M}_${NS}
         done
