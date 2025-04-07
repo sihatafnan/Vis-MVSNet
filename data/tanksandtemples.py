@@ -29,7 +29,7 @@ class TanksAndTemples(data.Dataset):
         src_idxs = self.pair[ref_idx][:self.num_src]
 
         ref, *srcs = [os.path.join(self.root, f'intermediate/{self.scene_names[self.scene_idx]}/images/{idx:08}.jpg') for idx in [ref_idx] + src_idxs]
-        ref_cam, *srcs_cam = [os.path.join(self.root, f'intermediate/{self.scene_names[self.scene_idx]}/cams_s/{idx:08}_cam.txt') for idx in [ref_idx] + src_idxs]
+        ref_cam, *srcs_cam = [os.path.join(self.root, f'intermediate/{self.scene_names[self.scene_idx]}/cams/{idx:08}_cam.txt') for idx in [ref_idx] + src_idxs]
         skip = 0
 
         sample = self.read({'ref':ref, 'ref_cam':ref_cam, 'srcs':srcs, 'srcs_cam':srcs_cam, 'skip':skip})
