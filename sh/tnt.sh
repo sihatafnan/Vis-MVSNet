@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR=./outputs/tnt
+DIR=/content/drive/MyDrive/MVS/outputs/tnt
 mkdir -p ${DIR}
 tanksandtemples_dir=/content/drive/MyDrive/MVS/tankandtemples
 load_dir=/content/Vis-MVSNet/pretrained_model/vis
