@@ -73,15 +73,6 @@ if __name__ == '__main__':
     )
 
     attack = True  # Toggle this to apply or skip the attack
-
-    for i, sample in enumerate(loader):
-        ref_cam = sample['ref_cam']  # shape: (1, 2, 4, 4)
-        extrinsic = ref_cam[0, 0]
-
-        if attack:
-            ref_cam[0, 0, 0, 3] -= 2  # X-axis
-            ref_cam[0, 0, 1, 3] -= 2  # Y-axis
-            ref_cam[0, 0, 2, 3] -= 2  # Z-axis
         
 
     model = Model()
@@ -97,6 +88,11 @@ if __name__ == '__main__':
     pbar = tqdm.tqdm(enumerate(loader), dynamic_ncols=True, total=len(loader))
     # pbar = itertools.product(range(num_scan), range(num_ref), range(num_view))
     for i, sample in pbar:
+        if attack:
+            sample['ref_cam'][0, 0, 0, 3] -= 2
+            sample['ref_cam'][0, 0, 1, 3] -= 2
+            sample['ref_cam'][0, 0, 2, 3] -= 2
+            
         if sample.get('skip') is not None and np.any(sample['skip']): raise ValueError()
 
         ref, ref_cam, srcs, srcs_cam, gt, masks = [sample[attr] for attr in ['ref', 'ref_cam', 'srcs', 'srcs_cam', 'gt', 'masks']]
