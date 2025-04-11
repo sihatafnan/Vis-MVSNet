@@ -72,6 +72,18 @@ if __name__ == '__main__':
         }
     )
 
+    attack = True  # Toggle this to apply or skip the attack
+
+    for i, sample in enumerate(loader):
+        ref_cam = sample['ref_cam']  # shape: (1, 2, 4, 4)
+        extrinsic = ref_cam[0, 0]
+
+        if attack:
+            ref_cam[0, 0, 0, 3] -= 2  # X-axis
+            ref_cam[0, 0, 1, 3] -= 2  # Y-axis
+            ref_cam[0, 0, 2, 3] -= 2  # Z-axis
+        
+
     model = Model()
     model.cuda()
     # model = amp.initialize(model, opt_level='O0')
