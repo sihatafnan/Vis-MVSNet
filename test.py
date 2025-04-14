@@ -89,9 +89,43 @@ if __name__ == '__main__':
     # pbar = itertools.product(range(num_scan), range(num_ref), range(num_view))
     for i, sample in pbar:
         if attack:
-            sample['ref_cam'][0, 0, 0, 3] -= 2
-            sample['ref_cam'][0, 0, 1, 3] -= 2
-            sample['ref_cam'][0, 0, 2, 3] -= 2
+            sample['ref_cam'][0, 0, 0, 3] += 0.0005
+            sample['ref_cam'][0, 0, 1, 3] -= 0.001
+            sample['ref_cam'][0, 0, 2, 3] += 0.0012
+
+            extrinsic = sample['ref_cam'][0, 0]  # shape: (4, 4)
+    
+            # Small angle values as PyTorch tensors
+            d_roll = torch.tensor(0.01, dtype=extrinsic.dtype, device=extrinsic.device)   # X-axis
+            d_pitch = torch.tensor(-0.02, dtype=extrinsic.dtype, device=extrinsic.device) # Y-axis
+            d_yaw = torch.tensor(0.015, dtype=extrinsic.dtype, device=extrinsic.device)   # Z-axis
+
+
+            # Rotation deltas
+            Rx = torch.tensor([
+                [1, 0, 0],
+                [0, torch.cos(d_roll), -torch.sin(d_roll)],
+                [0, torch.sin(d_roll), torch.cos(d_roll)]
+            ], dtype=extrinsic.dtype, device=extrinsic.device)
+
+            Ry = torch.tensor([
+                [torch.cos(d_pitch), 0, torch.sin(d_pitch)],
+                [0, 1, 0],
+                [-torch.sin(d_pitch), 0, torch.cos(d_pitch)]
+            ], dtype=extrinsic.dtype, device=extrinsic.device)
+
+            Rz = torch.tensor([
+                [torch.cos(d_yaw), -torch.sin(d_yaw), 0],
+                [torch.sin(d_yaw), torch.cos(d_yaw), 0],
+                [0, 0, 1]
+            ], dtype=extrinsic.dtype, device=extrinsic.device)
+
+            # Compose delta rotation
+            R_delta = Rz @ Ry @ Rx
+
+            # Apply the rotation update in-place
+            sample['ref_cam'][0, 0, :3, :3] = R_delta @ sample['ref_cam'][0, 0, :3, :3]
+
             
         if sample.get('skip') is not None and np.any(sample['skip']): raise ValueError()
 
