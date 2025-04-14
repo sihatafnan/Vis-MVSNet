@@ -8,7 +8,7 @@ load_dir=/content/Vis-MVSNet/pretrained_model/vis
 job_name=("model_cas")  # Correct way to define an array in Bash
 
 for M in "${job_name[@]}"; do
-    for S in {0..7}; do
+    for S in 0; do
         for NS in 7; do
             echo "----------Processing scan $S with model $M and ${NS} views----------"
             mkdir -p ${DIR}/depth_${S}_${M}_${NS}
