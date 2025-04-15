@@ -168,7 +168,7 @@ if __name__ == '__main__':
                 est_depth_o = est_depth[0, 0]
                 prob_maps_o = [prob_map[0, 0] for prob_map in prob_maps]
                 cv2.imwrite(os.path.join(args.result_dir, f'{i:08}.jpg'), ref_o)
-                write_cam(os.path.join(args.result_dir, f'cam_{i:08}_flow3.txt'), ref_cam_o)
+                #write_cam(os.path.join(args.result_dir, f'cam_{i:08}_flow3.txt'), ref_cam_o)
                 write_pfm(os.path.join(args.result_dir, f'{i:08}_flow3.pfm'), est_depth_o)
                 for stage_i, prob_map_o in enumerate(prob_maps_o):
                     write_pfm(os.path.join(args.result_dir, f'{i:08}_flow{stage_i+1}_prob.pfm'), prob_map_o)
