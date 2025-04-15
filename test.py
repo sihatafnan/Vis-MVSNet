@@ -96,9 +96,9 @@ if __name__ == '__main__':
             extrinsic = sample['ref_cam'][0, 0]  # shape: (4, 4)
     
             # Small angle values as PyTorch tensors
-            d_roll = torch.tensor(0.01, dtype=extrinsic.dtype, device=extrinsic.device)   # X-axis
-            d_pitch = torch.tensor(-0.02, dtype=extrinsic.dtype, device=extrinsic.device) # Y-axis
-            d_yaw = torch.tensor(0.015, dtype=extrinsic.dtype, device=extrinsic.device)   # Z-axis
+            d_roll = torch.tensor(0.01, dtype=torch.float32, device=extrinsic.device)   # X-axis
+            d_pitch = torch.tensor(-0.02, dtype=torch.float32, device=extrinsic.device) # Y-axis
+            d_yaw = torch.tensor(0.015, dtype=torch.float32, device=extrinsic.device)   # Z-axis
 
 
             # Rotation deltas
