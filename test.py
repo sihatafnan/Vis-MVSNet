@@ -106,19 +106,20 @@ if __name__ == '__main__':
                 [1, 0, 0],
                 [0, torch.cos(d_roll), -torch.sin(d_roll)],
                 [0, torch.sin(d_roll), torch.cos(d_roll)]
-            ], dtype=extrinsic.dtype, device=extrinsic.device)
+            ], dtype=torch.float32, device=extrinsic.device)
 
             Ry = torch.tensor([
                 [torch.cos(d_pitch), 0, torch.sin(d_pitch)],
                 [0, 1, 0],
                 [-torch.sin(d_pitch), 0, torch.cos(d_pitch)]
-            ], dtype=extrinsic.dtype, device=extrinsic.device)
+            ], dtype=torch.float32, device=extrinsic.device)
 
             Rz = torch.tensor([
                 [torch.cos(d_yaw), -torch.sin(d_yaw), 0],
                 [torch.sin(d_yaw), torch.cos(d_yaw), 0],
                 [0, 0, 1]
-            ], dtype=extrinsic.dtype, device=extrinsic.device)
+            ], dtype=torch.float32, device=extrinsic.device)
+
 
             # Compose delta rotation
             R_delta = Rz @ Ry @ Rx
